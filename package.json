@@ -1,0 +1,24 @@
+{
+  "name": "neurosecure",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI-powered browser privacy protection — root workspace",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "install:all": "npm install && npm install --prefix backend && npm install --prefix extension",
+    "download-models": "node scripts/download-models.js",
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:extension": "npm run dev --prefix extension",
+    "build:backend": "npm run build --prefix backend",
+    "build:extension": "npm run build --prefix extension",
+    "prisma:generate": "npm run prisma:generate --prefix backend",
+    "prisma:migrate": "npm run prisma:migrate --prefix backend",
+    "clean": "rimraf backend/dist extension/build extension/.plasmo",
+    "setup": "npm run install:all && npm run download-models && npm run prisma:generate --prefix backend"
+  },
+  "devDependencies": {
+    "rimraf": "^6.0.1"
+  }
+}

@@ -1,0 +1,39 @@
+generator client {
+  provider      = "prisma-client-js"
+  // Vercel serverless varies by image/OpenSSL — include Linux engines used on Node 20 + 22+ stacks.
+  binaryTargets = ["native", "rhel-openssl-3.0.x", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Plan {
+  FREE
+  PRO
+}
+
+model User {
+  id              String   @id @default(uuid()) @db.Uuid
+  email           String   @unique
+  plan            Plan     @default(FREE)
+  whatsapp_number String?
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+  alerts          Alert[]
+
+  @@map("users")
+}
+
+model Alert {
+  id             String   @id @default(uuid()) @db.Uuid
+  user_id        String   @db.Uuid
+  user           User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  intruder_photo String?
+  triggered_at   DateTime @default(now())
+
+  @@index([user_id])
+  @@map("alerts")
+}

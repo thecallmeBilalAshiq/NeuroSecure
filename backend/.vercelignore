@@ -1,0 +1,4 @@
+# Repo hygiene when Vercel project root is `backend/` (ignore paths relative to backend)
+*.log
+.env
+.env.*
